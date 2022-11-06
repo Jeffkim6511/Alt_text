@@ -1,0 +1,57 @@
+!pip install torch
+!pip install transformers
+!pip install --upgrade git+https://github.com/google/flax.git
+
+from transformers import VisionEncoderDecoderModel, ViTFeatureExtractor, AutoTokenizer
+import requests
+from PIL import Image
+import shutil
+import urllib
+
+model = VisionEncoderDecoderModel.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+feature_extractor = ViTFeatureExtractor.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+tokenizer = AutoTokenizer.from_pretrained("nlpconnect/vit-gpt2-image-captioning")
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
+
+
+
+max_length = 16
+beams = 4
+max_size = {"max_length": max_length, "num_beams": beams}
+def img_to_text(image_paths):
+  images = []
+  for image_path in image_paths:
+    i_image = Image.open(image_path)
+    if i_image.mode != "RGB":
+      i_image = i_image.convert(mode="RGB")
+
+    images.append(i_image)
+
+  pixel_values = feature_extractor(images=images, return_tensors="pt").pixel_values
+  pixel_values = pixel_values.to(device)
+
+  output_ids = model.generate(pixel_values, **max_size)
+
+  preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
+  preds = [pred.strip() for pred in preds]
+  return preds
+  
+  
+def url_to_img(pain):
+  img_url = pain
+  urllib.request.urlretrieve(img_url, "url")
+  
+  from transformers import VisionEncoderDecoderModel, ViTFeatureExtractor, AutoTokenizer
+import requests
+from PIL import Image
+import shutil
+import urllib
+
+def alt_text(bodies):
+  url_to_img(bodies)
+  print(img_to_text(["url"]))
+
+
+alt_text("")
