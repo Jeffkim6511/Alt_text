@@ -10,11 +10,10 @@ Alt Text is a simple, hackathon-built web tool that enhances image accessibility
 - Fast, minimal, and easy to integrate into any existing HTML page.
 
 ## 🛠️ How It Works
-
-1. Include the script in your HTML file.
-2. Each image on the page gets a "Describe Image" button beneath it.
-3. When the button is clicked, the script prompts the user to enter a description of the image.
-4. The entered text is appended to the HTML as a descriptive line (e.g., in a `<p>` tag or inserted into the image’s `alt` attribute).
+- Launch the application in your preferred code editor or development environment.
+- Load an HTML page with images — each image will automatically have a "Describe Image" button appear beneath it.
+- Click the button to generate a description — the image is sent to a Django backend, where an AI-powered image recognition model analyzes it and generates a descriptive text prompt.
+- The AI-generated description is then inserted into the HTML, either as a <p> tag below the image or as the image's alt attribute, improving accessibility.
 
 ## 📄 Example
 
